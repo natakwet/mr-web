@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindersAid.com - Publish & Discover Research Findings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            padding: 0.5rem;
+            border-radius: 12px;
+            color: white;
+            -webkit-text-fill-color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            padding: 4rem;
+            color: white;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="rgba(255,255,255,0.1)" d="M45,-70.1C58.9,-60.4,71.1,-47.6,78.6,-32.1C86.1,-16.6,88.9,1.7,83.9,18.1C78.9,34.5,66.2,49,51.9,60.5C37.6,72,21.5,80.5,3.4,78.4C-14.7,76.3,-34.7,63.6,-50.1,49.3C-65.5,35,-76.3,19,-79.1,1.1C-81.9,-16.8,-76.7,-36.6,-64.1,-50.4C-51.5,-64.2,-31.4,-72,-13.3,-70.3C4.8,-68.6,22.9,-57.4,45,-70.1Z" transform="translate(100 100)" /></svg>') no-repeat;
+            opacity: 0.1;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(5deg) scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 50px;
+            max-width: 500px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-bar button {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .search-bar button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        /* Categories */
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #1e293b;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Research Papers Grid */
+        .papers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .paper-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .paper-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .paper-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .paper-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            padding-right: 80px;
+        }
+
+        .paper-authors {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .paper-body {
+            padding: 1.5rem;
+        }
+
+        .paper-abstract {
+            color: #64748b;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .paper-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .paper-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        .paper-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #475569;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-outline:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #64748b;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #2563eb;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🔬</span>
+                FindersAid.com
+            </div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Research</a>
+                <a href="#">Categories</a>
+                <a href="#">About</a>
+                <a href="#" onclick="openLoginModal()">Login</a>
+                <button class="btn-primary" onclick="openPublishModal()">Publish Research</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Share Your Discoveries with the World</h1>
+                <p>Publish your research findings, collaborate with peers, and advance science together on FindersAid.com</p>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search research papers, authors, or keywords..." id="searchInput">
+                    <button onclick="searchPapers()">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="paperCount">1,247</div>
+                <div class="stat-label">Research Papers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="authorCount">892</div>
+                <div class="stat-label">Researchers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="institutionCount">156</div>
+                <div class="stat-label">Institutions</div>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <h2 class="section-title">Browse by Category</h2>
+        <div class="categories">
+            <div class="category-card" onclick="filterByCategory('Computer Science')">
+                <div class="category-icon">💻</div>
+                <div class="category-name">Computer Science</div>
+            </div>
+            <div class="category-card" onclick="filterByCategory('Medicine')">
+                <div class="category-icon">🏥</div>
+                <div class="category-name">Medicine</div>
+            </div>
+            <div class="category-card" onclick="filterByCategory('Physics')">
+                <div class="category-icon">⚛️</div>
+                <div class="category-name">Physics</div>
+            </div>
+            <div class="category-card" onclick="filterByCategory('Biology')">
+                <div class="category-icon">🧬</div>
+                <div class="category-name">Biology</div>
+            </div>
+            <div class="category-card" onclick="filterByCategory('Chemistry')">
+                <div class="category-icon">🧪</div>
+                <div class="category-name">Chemistry</div>
+            </div>
+            <div class="category-card" onclick="filterByCategory('Engineering')">
+                <div class="category-icon">⚙️</div>
+                <div class="category-name">Engineering</div>
+            </div>
+        </div>
+
+        <!-- Latest Research -->
+        <h2 class="section-title">Latest Research Findings</h2>
+        <div class="papers-grid" id="papersContainer">
+            <!-- Papers will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Publish Modal -->
+    <div class="modal" id="publishModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closePublishModal()">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">Publish Your Research</h2>
+            <form id="publishForm" onsubmit="publishResearch(event)">
+                <div class="form-group">
+                    <label for="title">Paper Title</label>
+                    <input type="text" id="title" required placeholder="Enter the title of your research">
+                </div>
+                <div class="form-group">
+                    <label for="authors">Authors (comma-separated)</label>
+                    <input type="text" id="authors" required placeholder="John Doe, Jane Smith">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Medicine">Medicine</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Biology">Biology</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Engineering">Engineering</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="abstract">Abstract</label>
+                    <textarea id="abstract" rows="5" required placeholder="Brief summary of your research"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="institution">Institution</label>
+                    <input type="text" id="institution" required placeholder="Your university or research institution">
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags (comma-separated)</label>
+                    <input type="text" id="tags" placeholder="AI, Machine Learning, Healthcare">
+                </div>
+                <div class="form-group">
+                    <label for="pdf">Upload PDF</label>
+                    <input type="file" id="pdf" accept=".pdf" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Submit Research</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">Login to FindersAid</h2>
+            <form id="loginForm" onsubmit="loginUser(event)">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+                <p style="text-align: center; margin-top: 1rem;">
+                    Don't have an account? <a href="#" onclick="switchToSignup()">Sign up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FindersAid.com</h3>
+                <p>Advancing science through open research collaboration.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#">About Us</a>
+                <a href="#">FAQ</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <a href="#">For Researchers</a>
+                <a href="#">For Institutions</a>
+                <a href="#">Reviewer Guidelines</a>
+                <a href="#">API Access</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">GitHub</a>
+                <a href="#">Contact Us</a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2024 FindersAid.com - All rights reserved. Advancing research, one discovery at a time.
+        </div>
+    </footer>
+
+    <script>
+        // Sample research papers data
+        let papers = [
+            {
+                id: 1,
+                title: "Deep Learning Applications in Medical Imaging",
+                authors: ["Dr. Sarah Chen", "Prof. Michael Rodriguez"],
+                category: "Computer Science",
+                abstract: "This research explores novel deep learning architectures for improved diagnosis from medical images, achieving 99.2% accuracy in detecting early-stage tumors.",
+                institution: "Stanford University",
+                tags: ["AI", "Healthcare", "Deep Learning"],
+                date: "2024-01-15",
+                downloads: 342,
+                citations: 28
+            },
+            {
+                id: 2,
+                title: "Novel Drug Delivery System for Cancer Treatment",
+                authors: ["Dr. Emily Watson", "Prof. James Kumar"],
+                category: "Medicine",
+                abstract: "Development of targeted nanoparticle-based drug delivery system that reduces side effects and improves efficacy in cancer treatment.",
+                institution: "Johns Hopkins University",
+                tags: ["Oncology", "Nanotechnology", "Drug Delivery"],
+                date: "2024-01-10",
+                downloads: 567,
+                citations: 45
+            },
+            {
+                id: 3,
+                title: "Quantum Computing for Climate Modeling",
+                authors: ["Dr. Alexander Petrov", "Prof. Lisa Zhang"],
+                category: "Physics",
+                abstract: "Using quantum algorithms to create more accurate climate models, potentially revolutionizing our understanding of climate change.",
+                institution: "MIT",
+                tags: ["Quantum Computing", "Climate Science", "Simulation"],
+                date: "2024-01-05",
+                downloads: 289,
+                citations: 19
+            },
+            {
+                id: 4,
+                title: "CRISPR-Cas9 Gene Editing in Rare Diseases",
+                authors: ["Dr. Maria Garcia", "Prof. Robert Thompson"],
+                category: "Biology",
+                abstract: "Successful application of CRISPR technology to correct genetic mutations causing rare diseases in human cell models.",
+                institution: "Harvard Medical School",
+                tags: ["Genetics", "CRISPR", "Rare Diseases"],
+                date: "2024-01-01",
+                downloads: 891,
+                citations: 67
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayPapers(papers);
+            updateStats();
+        });
+
+        // Display papers in the grid
+        function displayPapers(papersToShow) {
+            const container = document.getElementById('papersContainer');
+            container.innerHTML = '';
+
+            papersToShow.forEach(paper => {
+                const paperCard = createPaperCard(paper);
+                container.innerHTML += paperCard;
+            });
+        }
+
+        // Create HTML for a paper card
+        function createPaperCard(paper) {
+            return `
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-badge">${paper.category}</span>
+                        <h3 class="paper-title">${paper.title}</h3>
+                        <p class="paper-authors">${paper.authors.join(', ')}</p>
+                    </div>
+                    <div class="paper-body">
+                        <p class="paper-abstract">${paper.abstract}</p>
+                        <div class="paper-meta">
+                            <span>🏛️ ${paper.institution}</span>
+                            <span>📅 ${paper.date}</span>
+                        </div>
+                        <div class="paper-tags">
+                            ${paper.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="paper-meta" style="margin-top: 0.5rem;">
+                            <span>📥 ${paper.downloads} downloads</span>
+                            <span>📊 ${paper.citations} citations</span>
+                        </div>
+                        <div class="paper-actions">
+                            <button class="btn-outline" onclick="downloadPaper(${paper.id})">
+                                <span>📄</span> Download PDF
+                            </button>
+                            <button class="btn-outline" onclick="citePaper(${paper.id})">
+                                <span>📝</span> Cite
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('paperCount').textContent = papers.length;
+            
+            // Count unique authors
+            const allAuthors = papers.flatMap(p => p.authors);
+            const uniqueAuthors = [...new Set(allAuthors)];
+            document.getElementById('authorCount').textContent = uniqueAuthors.length;
+            
+            // Count unique institutions
+            const institutions = [...new Set(papers.map(p => p.institution))];
+            document.getElementById('institutionCount').textContent = institutions.length;
+        }
+
+        // Modal functions
+        function openPublishModal() {
+            document.getElementById('publishModal').classList.add('active');
+        }
+
+        function closePublishModal() {
+            document.getElementById('publishModal').classList.remove('active');
+            document.getElementById('publishForm').reset();
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        // Publish research
+        function publishResearch(event) {
+            event.preventDefault();
+            
+            const newPaper = {
+                id: papers.length + 1,
+                title: document.getElementById('title').value,
+                authors: document.getElementById('authors').value.split(',').map(a => a.trim()),
+                category: document.getElementById('category').value,
+                abstract: document.getElementById('abstract').value,
+                institution: document.getElementById('institution').value,
+                tags: document.getElementById('tags').value.split(',').map(t => t.trim()),
+                date: new Date().toISOString().split('T')[0],
+                downloads: 0,
+                citations: 0
+            };
+
+            papers.unshift(newPaper);
+            displayPapers(papers);
+            updateStats();
+            closePublishModal();
+            
+            // Show success message
+            alert('Your research has been published successfully!');
+        }
+
+        // Login function
+        function loginUser(event) {
+            event.preventDefault();
+            alert('Demo: Login functionality would be implemented with backend authentication.');
+            closeLoginModal();
+        }
+
+        function switchToSignup() {
+            closeLoginModal();
+            alert('Demo: Sign up functionality would redirect to registration page.');
+        }
+
+        // Search papers
+        function searchPapers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm) {
+                displayPapers(papers);
+                return;
+            }
+
+            const filtered = papers.filter(paper => 
+                paper.title.toLowerCase().includes(searchTerm) ||
+                paper.authors.some(author => author.toLowerCase().includes(searchTerm)) ||
+                paper.abstract.toLowerCase().includes(searchTerm) ||
+                paper.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+
+            displayPapers(filtered);
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            const filtered = papers.filter(paper => paper.category === category);
+            displayPapers(filtered);
+            
+            // Highlight selected category
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.style.borderColor = card.querySelector('.category-name').textContent === category ? '#2563eb' : 'transparent';
+            });
+        }
+
+        // Download paper
+        function downloadPaper(paperId) {
+            const paper = papers.find(p => p.id === paperId);
+            if (paper) {
+                paper.downloads++;
+                alert(`Downloading: ${paper.title}\nIn a production environment, this would download the PDF file.`);
+                updateStats();
+            }
+        }
+
+        // Cite paper
+        function citePaper(paperId) {
+            const paper = papers.find(p => p.id === paperId);
+            if (paper) {
+                paper.citations++;
+                const citation = `${paper.authors.join(', ')} (${paper.date}). ${paper.title}. ${paper.institution}.`;
+                navigator.clipboard.writeText(citation).then(() => {
+                    alert('Citation copied to clipboard!');
+                });
+                updateStats();
+            }
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        };
+    </script>
+</body>
+</html>
